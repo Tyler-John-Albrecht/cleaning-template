@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Intake Form — Brechtland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue:    #1A73E8;
+      --blue-dk: #1558B0;
+      --blue-lt: #EBF3FD;
+      --dark:    #0D1B2A;
+      --text:    #374151;
+      --text-lt: #6B7280;
+      --border:  #D1D9E0;
+      --bg:      #F8FAFC;
+      --white:   #FFFFFF;
+      --green:   #16A34A;
+      --green-lt:#DCFCE7;
+      --red:     #DC2626;
+      --r:       10px;
+      --sh:      0 1px 12px rgba(13,27,42,.07);
+      --sh-md:   0 4px 24px rgba(13,27,42,.10);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Plus Jakarta Sans', sans-serif;
+      background:var(--bg); color:var(--text);
+      line-height:1.6; padding-bottom:80px;
+    }
+
+    /* HEADER */
+    .header {
+      background:var(--dark);
+      padding:28px 0 0;
+      margin-bottom:48px;
+    }
+    .header-inner {
+      max-width:780px; margin:0 auto; padding:0 24px;
+    }
+    .brand {
+      font-family:'DM Serif Display', serif;
+      font-size:1.4rem; color:#fff; margin-bottom:24px;
+      display:inline-block;
+    }
+    .brand span { color:var(--blue); }
+
+    .header-card {
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:var(--r) var(--r) 0 0;
+      padding:32px 36px;
+    }
+    .header-card h1 {
+      font-family:'DM Serif Display', serif;
+      font-size:1.9rem; color:#fff; margin-bottom:10px;
+    }
+    .header-card p { color:rgba(255,255,255,.6); font-size:.95rem; max-width:560px; }
+    .header-pills {
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;
+    }
+    .hpill {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      color:rgba(255,255,255,.7); font-size:.76rem; font-weight:600;
+      padding:5px 12px; border-radius:100px;
+    }
+    .hpill::before { content:'✓'; color:var(--blue); }
+
+    /* PROGRESS */
+    .progress-bar {
+      max-width:780px; margin:0 auto 36px; padding:0 24px;
+      display:flex; align-items:center; gap:0;
+    }
+    .prog-step {
+      flex:1; text-align:center; position:relative;
+    }
+    .prog-step::after {
+      content:''; position:absolute; top:15px;
+      left:50%; right:-50%; height:2px;
+      background:var(--border); z-index:0;
+    }
+    .prog-step:last-child::after { display:none; }
+    .prog-dot {
+      width:30px; height:30px; border-radius:50%;
+      background:var(--border); color:var(--text-lt);
+      font-size:.78rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 6px; position:relative; z-index:1;
+      transition:background .3s, color .3s;
+    }
+    .prog-step.active .prog-dot  { background:var(--blue); color:#fff; }
+    .prog-step.done .prog-dot    { background:var(--green); color:#fff; }
+    .prog-step.done .prog-dot::after { content:'✓'; }
+    .prog-lbl { font-size:.7rem; color:var(--text-lt); font-weight:600; }
+    .prog-step.active .prog-lbl  { color:var(--blue); }
+    .prog-step.done   .prog-lbl  { color:var(--green); }
+
+    /* MAIN */
+    .main { max-width:780px; margin:0 auto; padding:0 24px; }
+
+    /* SECTION CARDS */
+    .q-section {
+      background:var(--white); border:1px solid var(--border);
+      border-radius:var(--r); box-shadow:var(--sh);
+      margin-bottom:24px; overflow:hidden;
+    }
+    .q-section-head {
+      padding:22px 28px;
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; gap:14px;
+      background:var(--white);
+      cursor:pointer; user-select:none;
+    }
+    .q-num {
+      width:36px; height:36px; border-radius:50%; flex-shrink:0;
+      background:var(--blue-lt); color:var(--blue);
+      font-weight:700; font-size:.88rem;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .q-section-head-txt h2 {
+      font-family:'DM Serif Display', serif;
+      font-size:1.15rem; color:var(--dark); margin-bottom:2px;
+    }
+    .q-section-head-txt p { font-size:.8rem; color:var(--text-lt); }
+    .q-req-count {
+      margin-left:auto; font-size:.72rem; font-weight:600;
+      color:var(--text-lt); white-space:nowrap;
+    }
+    .q-chevron {
+      margin-left:8px; font-size:.8rem; color:var(--text-lt);
+      transition:transform .25s ease;
+    }
+    .q-section.open .q-chevron { transform:rotate(180deg); }
+
+    .q-body { padding:28px; display:none; flex-direction:column; gap:20px; }
+    .q-section.open .q-body { display:flex; }
+
+    /* FORM ELEMENTS */
+    .frow { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .fgroup { display:flex; flex-direction:column; gap:6px; }
+    .fgroup label {
+      font-size:.82rem; font-weight:600; color:var(--dark);
+      display:flex; align-items:center; gap:6px;
+    }
+    .req-star { color:var(--red); font-size:.85rem; }
+    .opt-tag {
+      font-size:.68rem; font-weight:600; color:var(--text-lt);
+      background:var(--bg); border:1px solid var(--border);
+      padding:1px 7px; border-radius:100px;
+    }
+    .fgroup input,
+    .fgroup select,
+    .fgroup textarea {
+      padding:11px 14px; border:1.5px solid var(--border);
+      border-radius:8px; font-family:'Plus Jakarta Sans', sans-serif;
+      font-size:.9rem; color:var(--dark); background:var(--white);
+      outline:none; width:100%; transition:border-color .2s, box-shadow .2s;
+    }
+    .fgroup input:focus,
+    .fgroup select:focus,
+    .fgroup textarea:focus {
+      border-color:var(--blue);
+      box-shadow:0 0 0 3px rgba(26,115,232,.12);
+    }
+    .fgroup textarea { resize:vertical; min-height:90px; }
+    .fgroup select { cursor:pointer; }
+    .fhint { font-size:.76rem; color:var(--text-lt); margin-top:2px; }
+
+    /* CHECKBOXES */
+    .check-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px; }
+    .check-item {
+      display:flex; align-items:center; gap:10px;
+      padding:11px 14px; border:1.5px solid var(--border);
+      border-radius:8px; cursor:pointer;
+      transition:border-color .2s, background .2s;
+    }
+    .check-item:hover { border-color:var(--blue); background:var(--blue-lt); }
+    .check-item input[type="checkbox"] { width:16px; height:16px; accent-color:var(--blue); cursor:pointer; }
+    .check-item label { font-size:.88rem; font-weight:500; color:var(--dark); cursor:pointer; }
+
+    /* RADIO GRID */
+    .radio-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:10px; }
+    .radio-card {
+      display:flex; flex-direction:column; align-items:center;
+      padding:16px 12px; border:1.5px solid var(--border);
+      border-radius:8px; cursor:pointer; text-align:center;
+      transition:border-color .2s, background .2s;
+    }
+    .radio-card:has(input:checked) { border-color:var(--blue); background:var(--blue-lt); }
+    .radio-card input { display:none; }
+    .radio-icon { font-size:1.4rem; margin-bottom:6px; }
+    .radio-card span { font-size:.82rem; font-weight:600; color:var(--dark); }
+
+    /* TOGGLE SWITCH */
+    .toggle-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 0; border-bottom:1px solid var(--border);
+    }
+    .toggle-row:last-child { border-bottom:none; padding-bottom:0; }
+    .toggle-lbl h4 { font-size:.9rem; font-weight:600; color:var(--dark); }
+    .toggle-lbl p  { font-size:.78rem; color:var(--text-lt); }
+    .toggle {
+      position:relative; width:44px; height:24px; flex-shrink:0;
+    }
+    .toggle input { opacity:0; width:0; height:0; }
+    .toggle-track {
+      position:absolute; inset:0; background:var(--border);
+      border-radius:100px; cursor:pointer;
+      transition:background .2s;
+    }
+    .toggle input:checked ~ .toggle-track { background:var(--blue); }
+    .toggle-track::after {
+      content:''; position:absolute;
+      width:18px; height:18px; border-radius:50%;
+      background:#fff; top:3px; left:3px;
+      transition:left .2s;
+      box-shadow:0 1px 4px rgba(0,0,0,.2);
+    }
+    .toggle input:checked ~ .toggle-track::after { left:23px; }
+
+    /* SERVICE PRICING TABLE */
+    .svc-table { width:100%; border-collapse:collapse; }
+    .svc-table th {
+      text-align:left; font-size:.74rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:.07em;
+      color:var(--text-lt); padding:0 0 10px; border-bottom:1px solid var(--border);
+    }
+    .svc-table td { padding:12px 0; border-bottom:1px solid var(--border); vertical-align:middle; }
+    .svc-table tr:last-child td { border-bottom:none; }
+    .svc-check { width:20px; height:20px; accent-color:var(--blue); cursor:pointer; }
+    .svc-name { font-size:.9rem; font-weight:500; color:var(--dark); padding-left:12px; }
+    .svc-name small { display:block; font-size:.76rem; color:var(--text-lt); font-weight:400; }
+    .svc-input {
+      width:130px; padding:8px 12px; border:1.5px solid var(--border);
+      border-radius:6px; font-size:.88rem; color:var(--dark);
+      font-family:'Plus Jakarta Sans', sans-serif;
+      outline:none; transition:border-color .2s;
+    }
+    .svc-input:focus { border-color:var(--blue); }
+    .svc-input::placeholder { color:var(--text-lt); }
+
+    /* TESTIMONIAL CARDS */
+    .test-block {
+      background:var(--bg); border:1.5px solid var(--border);
+      border-radius:8px; padding:18px; display:flex;
+      flex-direction:column; gap:12px;
+    }
+    .test-block-head {
+      font-size:.78rem; font-weight:700; color:var(--blue);
+      text-transform:uppercase; letter-spacing:.07em;
+    }
+
+    /* COLOR SWATCHES */
+    .swatch-grid { display:flex; flex-wrap:wrap; gap:10px; }
+    .swatch {
+      position:relative; cursor:pointer;
+    }
+    .swatch input { position:absolute; opacity:0; }
+    .swatch-box {
+      width:48px; height:48px; border-radius:8px;
+      border:3px solid transparent;
+      transition:border-color .2s, transform .2s;
+    }
+    .swatch:has(input:checked) .swatch-box {
+      border-color:var(--dark); transform:scale(1.1);
+    }
+    .swatch-lbl { font-size:.68rem; color:var(--text-lt); text-align:center; margin-top:4px; }
+
+    /* DIVIDER */
+    .divider {
+      height:1px; background:var(--border); margin:4px 0;
+    }
+    .section-note {
+      background:var(--blue-lt); border:1px solid rgba(26,115,232,.2);
+      border-radius:8px; padding:12px 16px;
+      font-size:.82rem; color:var(--blue);
+      display:flex; align-items:flex-start; gap:8px;
+    }
+    .section-note::before { content:'💡'; flex-shrink:0; }
+
+    /* SUBMIT */
+    .submit-section {
+      background:var(--white); border:1px solid var(--border);
+      border-radius:var(--r); box-shadow:var(--sh);
+      padding:36px 28px; text-align:center;
+    }
+    .submit-section h2 {
+      font-family:'DM Serif Display', serif;
+      font-size:1.6rem; color:var(--dark); margin-bottom:10px;
+    }
+    .submit-section p { color:var(--text-lt); font-size:.92rem; margin-bottom:28px; }
+    .submit-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:15px 40px; background:var(--blue); color:#fff;
+      border:none; border-radius:8px; cursor:pointer;
+      font-family:'Plus Jakarta Sans', sans-serif;
+      font-weight:700; font-size:1rem;
+      box-shadow:0 4px 16px rgba(26,115,232,.3);
+      transition:background .2s, transform .2s;
+    }
+    .submit-btn:hover { background:var(--blue-dk); transform:translateY(-2px); }
+    .submit-checklist {
+      display:flex; flex-wrap:wrap; justify-content:center;
+      gap:16px; margin-top:20px;
+    }
+    .submit-check {
+      display:flex; align-items:center; gap:6px;
+      font-size:.8rem; color:var(--text-lt);
+    }
+    .submit-check::before { content:'✓'; color:var(--green); font-weight:700; }
+
+    /* SUCCESS */
+    .success-msg {
+      display:none; background:var(--green-lt);
+      border:1.5px solid var(--green); border-radius:var(--r);
+      padding:28px; text-align:center; margin-bottom:24px;
+    }
+    .success-msg h3 { color:var(--green); font-family:'DM Serif Display',serif; font-size:1.4rem; margin-bottom:8px; }
+    .success-msg p  { color:#166534; font-size:.92rem; }
+
+    @media(max-width:640px){
+      .frow { grid-template-columns:1fr; }
+      .radio-grid { grid-template-columns:1fr 1fr; }
+      .header-card { padding:24px 20px; }
+      .q-body { padding:20px; }
+      .progress-bar { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">Brecht<span>land</span></div>
+    <div class="header-card">
+      <h1>Website Intake Form</h1>
+      <p>Fill this out completely and we'll have your professional website ready to review within 48 hours. The more detail you give, the better your site will be.</p>
+      <div class="header-pills">
+        <span class="hpill">Takes ~10 minutes</span>
+        <span class="hpill">No tech knowledge needed</span>
+        <span class="hpill">Website delivered in 48hrs</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar" id="progress">
+  <div class="prog-step active" data-sec="1"><div class="prog-dot">1</div><div class="prog-lbl">Business</div></div>
+  <div class="prog-step" data-sec="2"><div class="prog-dot">2</div><div class="prog-lbl">Services</div></div>
+  <div class="prog-step" data-sec="3"><div class="prog-dot">3</div><div class="prog-lbl">About</div></div>
+  <div class="prog-step" data-sec="4"><div class="prog-dot">4</div><div class="prog-lbl">Trust</div></div>
+  <div class="prog-step" data-sec="5"><div class="prog-dot">5</div><div class="prog-lbl">Brand</div></div>
+  <div class="prog-step" data-sec="6"><div class="prog-dot">6</div><div class="prog-lbl">Reviews</div></div>
+  <div class="prog-step" data-sec="7"><div class="prog-dot">7</div><div class="prog-lbl">Photos</div></div>
+  <div class="prog-step" data-sec="8"><div class="prog-dot">8</div><div class="prog-lbl">Tech</div></div>
+</div>
+
+<div class="success-msg" id="successMsg">
+  <h3>Form Submitted Successfully!</h3>
+  <p>Tyler at Brechtland will receive your responses and reach out within 24 hours to confirm details before building your site.</p>
+</div>
+
+<form class="main" id="intakeForm" action="https://formspree.io/f/meelwrne" method="POST">
+
+  <!-- ── SECTION 1: BUSINESS BASICS ── -->
+  <div class="q-section open" data-section="1">
+    <div class="q-section-head">
+      <div class="q-num">1</div>
+      <div class="q-section-head-txt">
+        <h2>Business Basics</h2>
+        <p>The foundation — your name, contact info, and location</p>
+      </div>
+      <span class="q-req-count">6 required</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="frow">
+        <div class="fgroup">
+          <label>Business Name <span class="req-star">*</span></label>
+          <input type="text" name="business_name" placeholder="e.g. Sparkle Pro Cleaning" required>
+        </div>
+        <div class="fgroup">
+          <label>Business Tagline <span class="opt-tag">optional</span></label>
+          <input type="text" name="tagline" placeholder="e.g. We clean, you relax">
+          <span class="fhint">Leave blank and we'll write one for you</span>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label>Phone Number <span class="req-star">*</span></label>
+          <input type="tel" name="phone" placeholder="(555) 000-0000" required>
+        </div>
+        <div class="fgroup">
+          <label>Email Address <span class="req-star">*</span></label>
+          <input type="email" name="email" placeholder="hello@yourbusiness.com" required>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label>City & State <span class="req-star">*</span></label>
+          <input type="text" name="city_state" placeholder="e.g. Tampa, FL" required>
+        </div>
+        <div class="fgroup">
+          <label>Full Service Area <span class="req-star">*</span></label>
+          <input type="text" name="service_area" placeholder="e.g. Tampa, St. Pete, Clearwater" required>
+          <span class="fhint">List all cities/neighborhoods you cover</span>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label>Existing Website <span class="opt-tag">optional</span></label>
+          <input type="url" name="existing_website" placeholder="https://yoursite.com">
+          <span class="fhint">If you have one — we'll improve on it</span>
+        </div>
+        <div class="fgroup">
+          <label>Years in Business <span class="req-star">*</span></label>
+          <input type="text" name="years_in_business" placeholder="e.g. 3 years, since 2019" required>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: SERVICES & PRICING ── -->
+  <div class="q-section" data-section="2">
+    <div class="q-section-head">
+      <div class="q-num">2</div>
+      <div class="q-section-head-txt">
+        <h2>Services & Pricing</h2>
+        <p>What you offer and what you charge — we'll build the services section around this</p>
+      </div>
+      <span class="q-req-count">required</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="section-note">Check every service you offer and fill in your starting price. If you don't publish prices online, write "Quote only" in the price field.</div>
+
+      <table class="svc-table">
+        <tr>
+          <th style="width:40px"></th>
+          <th>Service</th>
+          <th>Starting Price</th>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="svc_recurring" class="svc-check" value="yes"></td>
+          <td class="svc-name">Recurring / Maintenance Cleaning<small>Weekly, bi-weekly, monthly</small></td>
+          <td><input type="text" name="price_recurring" class="svc-input" placeholder="e.g. $120"></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="svc_deep" class="svc-check" value="yes"></td>
+          <td class="svc-name">Deep Cleaning<small>One-time thorough clean</small></td>
+          <td><input type="text" name="price_deep" class="svc-input" placeholder="e.g. $250"></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="svc_moveinout" class="svc-check" value="yes"></td>
+          <td class="svc-name">Move-In / Move-Out<small>Empty unit clean</small></td>
+          <td><input type="text" name="price_moveinout" class="svc-input" placeholder="e.g. $300"></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="svc_airbnb" class="svc-check" value="yes"></td>
+          <td class="svc-name">Airbnb / Short-Term Rental<small>Between-guest turnover</small></td>
+          <td><input type="text" name="price_airbnb" class="svc-input" placeholder="e.g. $150"></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="svc_commercial" class="svc-check" value="yes"></td>
+          <td class="svc-name">Commercial / Office Cleaning<small>Businesses, offices</small></td>
+          <td><input type="text" name="price_commercial" class="svc-input" placeholder="e.g. Quote only"></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="svc_postcon" class="svc-check" value="yes"></td>
+          <td class="svc-name">Post-Construction Cleaning<small>After renovation/build</small></td>
+          <td><input type="text" name="price_postcon" class="svc-input" placeholder="e.g. Quote only"></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="svc_other" class="svc-check" value="yes"></td>
+          <td class="svc-name">Other (describe below)<small></small></td>
+          <td><input type="text" name="price_other" class="svc-input" placeholder="e.g. $XX"></td>
+        </tr>
+      </table>
+
+      <div class="fgroup">
+        <label>Other / Additional Services <span class="opt-tag">optional</span></label>
+        <textarea name="other_services" placeholder="Describe any services not listed above…"></textarea>
+      </div>
+
+      <div class="fgroup">
+        <label>Primary Target Client <span class="req-star">*</span></label>
+        <div class="radio-grid">
+          <label class="radio-card"><input type="radio" name="target_client" value="Residential homeowners" required><span class="radio-icon">🏠</span><span>Residential Homeowners</span></label>
+          <label class="radio-card"><input type="radio" name="target_client" value="Airbnb / STR hosts"><span class="radio-icon">🛏️</span><span>Airbnb / STR Hosts</span></label>
+          <label class="radio-card"><input type="radio" name="target_client" value="Commercial businesses"><span class="radio-icon">🏢</span><span>Commercial / Businesses</span></label>
+          <label class="radio-card"><input type="radio" name="target_client" value="Mix of all"><span class="radio-icon">✨</span><span>Mix of All</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: ABOUT YOUR BUSINESS ── -->
+  <div class="q-section" data-section="3">
+    <div class="q-section-head">
+      <div class="q-num">3</div>
+      <div class="q-section-head-txt">
+        <h2>About Your Business</h2>
+        <p>Who you are, your story, and what makes you different</p>
+      </div>
+      <span class="q-req-count">3 required</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="fgroup">
+        <label>Tell Us About Your Business <span class="req-star">*</span></label>
+        <textarea name="about_bio" rows="5" placeholder="How did you get started? What do you love about what you do? What makes your cleaning company different from the other guys? Write as much or as little as you want — we'll clean it up." required></textarea>
+        <span class="fhint">Don't worry about how it sounds — just write naturally. We'll make it great.</span>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label>Number of Cleaners / Team Size <span class="req-star">*</span></label>
+          <select name="team_size" required>
+            <option value="" disabled selected>Select…</option>
+            <option>Just me (solo operator)</option>
+            <option>2–3 cleaners</option>
+            <option>4–6 cleaners</option>
+            <option>7–10 cleaners</option>
+            <option>10+ cleaners</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Approximate Homes Cleaned (Total) <span class="req-star">*</span></label>
+          <input type="text" name="homes_cleaned" placeholder="e.g. 200+, 500+, 50+" required>
+          <span class="fhint">Estimate is fine — this shows up as a trust stat</span>
+        </div>
+      </div>
+      <div class="fgroup">
+        <label>Your Top 3 Differentiators <span class="req-star">*</span></label>
+        <textarea name="differentiators" placeholder="What do you do better or differently than competitors? e.g. 'We always send the same cleaner, never a stranger' / 'We use 100% non-toxic products' / 'We answer the phone 7 days a week'" required></textarea>
+      </div>
+      <div class="fgroup">
+        <label>Do You Have a Satisfaction Guarantee? <span class="opt-tag">optional</span></label>
+        <input type="text" name="guarantee" placeholder="e.g. 'If you're not happy, we re-clean for free within 24 hours'">
+        <span class="fhint">Leave blank if you don't have one yet — we'll recommend one</span>
+      </div>
+      <div class="fgroup">
+        <label>Current Google Rating <span class="opt-tag">optional</span></label>
+        <input type="text" name="google_rating" placeholder="e.g. 4.9 ★ (37 reviews)">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: TRUST & CREDENTIALS ── -->
+  <div class="q-section" data-section="4">
+    <div class="q-section-head">
+      <div class="q-num">4</div>
+      <div class="q-section-head-txt">
+        <h2>Trust & Credentials</h2>
+        <p>The things that make customers feel safe hiring you</p>
+      </div>
+      <span class="q-req-count">required</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="toggle-row">
+        <div class="toggle-lbl"><h4>Bonded & Insured</h4><p>You carry liability insurance and/or a surety bond</p></div>
+        <label class="toggle"><input type="checkbox" name="bonded_insured" value="Yes"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-lbl"><h4>Background-Checked Employees</h4><p>All cleaners pass a background check before hire</p></div>
+        <label class="toggle"><input type="checkbox" name="background_checked" value="Yes"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-lbl"><h4>Eco-Friendly / Non-Toxic Products</h4><p>You use green, pet-safe, or non-toxic cleaning products</p></div>
+        <label class="toggle"><input type="checkbox" name="eco_friendly" value="Yes"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-lbl"><h4>Pet-Friendly / Child-Safe Products</h4><p>Safe for homes with pets or small children</p></div>
+        <label class="toggle"><input type="checkbox" name="pet_safe" value="Yes"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-lbl"><h4>Online Booking Available</h4><p>Customers can book directly online without calling</p></div>
+        <label class="toggle"><input type="checkbox" name="online_booking" value="Yes"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-lbl"><h4>Same Cleaner Every Visit</h4><p>You send the same person each time (recurring clients)</p></div>
+        <label class="toggle"><input type="checkbox" name="same_cleaner" value="Yes"><span class="toggle-track"></span></label>
+      </div>
+      <div class="fgroup" style="margin-top:8px">
+        <label>Any Certifications or Awards <span class="opt-tag">optional</span></label>
+        <input type="text" name="certifications" placeholder="e.g. ARCSI member, BBB accredited, Angi Top Pro, etc.">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: BRAND & STYLE ── -->
+  <div class="q-section" data-section="5">
+    <div class="q-section-head">
+      <div class="q-num">5</div>
+      <div class="q-section-head-txt">
+        <h2>Brand & Visual Style</h2>
+        <p>How you want your website to look and feel</p>
+      </div>
+      <span class="q-req-count">2 required</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="fgroup">
+        <label>Website Vibe <span class="req-star">*</span></label>
+        <div class="radio-grid">
+          <label class="radio-card"><input type="radio" name="vibe" value="Premium & luxurious" required><span class="radio-icon">💎</span><span>Premium & Luxury</span></label>
+          <label class="radio-card"><input type="radio" name="vibe" value="Clean & professional"><span class="radio-icon">🏆</span><span>Clean & Professional</span></label>
+          <label class="radio-card"><input type="radio" name="vibe" value="Friendly & approachable"><span class="radio-icon">😊</span><span>Friendly & Approachable</span></label>
+          <label class="radio-card"><input type="radio" name="vibe" value="Modern & minimalist"><span class="radio-icon">⚡</span><span>Modern & Minimalist</span></label>
+          <label class="radio-card"><input type="radio" name="vibe" value="Eco / natural"><span class="radio-icon">🌿</span><span>Eco & Natural</span></label>
+          <label class="radio-card"><input type="radio" name="vibe" value="No preference – you choose"><span class="radio-icon">🎯</span><span>You Choose for Me</span></label>
+        </div>
+      </div>
+      <div class="fgroup">
+        <label>Color Preference <span class="req-star">*</span></label>
+        <div class="swatch-grid">
+          <label class="swatch"><input type="radio" name="color_pref" value="Blue & white (trust, clean)"><div class="swatch-box" style="background:linear-gradient(135deg,#1A73E8,#93C5FD)"></div><div class="swatch-lbl">Blue</div></label>
+          <label class="swatch"><input type="radio" name="color_pref" value="Green & white (eco, fresh)"><div class="swatch-box" style="background:linear-gradient(135deg,#16A34A,#86EFAC)"></div><div class="swatch-lbl">Green</div></label>
+          <label class="swatch"><input type="radio" name="color_pref" value="Teal & white (modern)"><div class="swatch-box" style="background:linear-gradient(135deg,#0D9488,#99F6E4)"></div><div class="swatch-lbl">Teal</div></label>
+          <label class="swatch"><input type="radio" name="color_pref" value="Navy & gold (premium)"><div class="swatch-box" style="background:linear-gradient(135deg,#1E3A5F,#D4AF37)"></div><div class="swatch-lbl">Navy/Gold</div></label>
+          <label class="swatch"><input type="radio" name="color_pref" value="Purple & white (bold)"><div class="swatch-box" style="background:linear-gradient(135deg,#7C3AED,#C4B5FD)"></div><div class="swatch-lbl">Purple</div></label>
+          <label class="swatch"><input type="radio" name="color_pref" value="Orange & dark (energetic)"><div class="swatch-box" style="background:linear-gradient(135deg,#EA580C,#FED7AA)"></div><div class="swatch-lbl">Orange</div></label>
+          <label class="swatch"><input type="radio" name="color_pref" value="No preference – you choose"><div class="swatch-box" style="background:linear-gradient(135deg,#6B7280,#E5E7EB)"></div><div class="swatch-lbl">You Choose</div></label>
+        </div>
+        <span class="fhint">Pick the palette that feels most like your brand</span>
+      </div>
+      <div class="fgroup">
+        <label>Do You Have a Logo? <span class="opt-tag">optional</span></label>
+        <select name="has_logo">
+          <option value="" disabled selected>Select…</option>
+          <option>Yes — I'll send the file</option>
+          <option>Yes — but it needs updating</option>
+          <option>No — just use my business name styled nicely</option>
+          <option>No — I need a logo designed too</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label>Competitor Websites You Like <span class="opt-tag">optional</span></label>
+        <textarea name="competitor_sites" placeholder="Paste 1–3 URLs of competitor or other cleaning company websites you like the look of. This helps us understand your taste."></textarea>
+      </div>
+      <div class="fgroup">
+        <label>Anything You Hate in Website Design <span class="opt-tag">optional</span></label>
+        <input type="text" name="design_dislikes" placeholder="e.g. Busy layouts, too many colors, dark backgrounds, stock photo-looking images…">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: REAL REVIEWS ── -->
+  <div class="q-section" data-section="6">
+    <div class="q-section-head">
+      <div class="q-num">6</div>
+      <div class="q-section-head-txt">
+        <h2>Real Customer Reviews</h2>
+        <p>Copy 3–5 real reviews from Google, Yelp, or Facebook — these go directly on your site</p>
+      </div>
+      <span class="q-req-count">3 minimum</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="section-note">Copy the exact review text, reviewer's first name, and what service they used. Real reviews convert far better than made-up ones.</div>
+
+      <div class="test-block">
+        <div class="test-block-head">Review #1 (Required)</div>
+        <div class="fgroup"><label>Review Text <span class="req-star">*</span></label><textarea name="review1_text" placeholder="Paste the full review here…" required></textarea></div>
+        <div class="frow">
+          <div class="fgroup"><label>Reviewer First Name <span class="req-star">*</span></label><input type="text" name="review1_name" placeholder="e.g. Sarah M." required></div>
+          <div class="fgroup"><label>Service They Used <span class="opt-tag">optional</span></label><input type="text" name="review1_service" placeholder="e.g. Recurring Clean, Deep Clean"></div>
+        </div>
+      </div>
+
+      <div class="test-block">
+        <div class="test-block-head">Review #2 (Required)</div>
+        <div class="fgroup"><label>Review Text <span class="req-star">*</span></label><textarea name="review2_text" placeholder="Paste the full review here…" required></textarea></div>
+        <div class="frow">
+          <div class="fgroup"><label>Reviewer First Name <span class="req-star">*</span></label><input type="text" name="review2_name" placeholder="e.g. James R." required></div>
+          <div class="fgroup"><label>Service They Used <span class="opt-tag">optional</span></label><input type="text" name="review2_service" placeholder="e.g. Airbnb Turnover"></div>
+        </div>
+      </div>
+
+      <div class="test-block">
+        <div class="test-block-head">Review #3 (Required)</div>
+        <div class="fgroup"><label>Review Text <span class="req-star">*</span></label><textarea name="review3_text" placeholder="Paste the full review here…" required></textarea></div>
+        <div class="frow">
+          <div class="fgroup"><label>Reviewer First Name <span class="req-star">*</span></label><input type="text" name="review3_name" placeholder="e.g. Amanda K." required></div>
+          <div class="fgroup"><label>Service They Used <span class="opt-tag">optional</span></label><input type="text" name="review3_service" placeholder="e.g. Move-Out Clean"></div>
+        </div>
+      </div>
+
+      <div class="test-block">
+        <div class="test-block-head">Review #4 <span class="opt-tag" style="text-transform:none;font-size:.74rem">optional</span></div>
+        <div class="fgroup"><label>Review Text</label><textarea name="review4_text" placeholder="Paste the full review here…"></textarea></div>
+        <div class="frow">
+          <div class="fgroup"><label>Reviewer First Name</label><input type="text" name="review4_name" placeholder="e.g. Michelle T."></div>
+          <div class="fgroup"><label>Service / Detail</label><input type="text" name="review4_service" placeholder="e.g. Recurring — 14 months"></div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label>Google Business Profile Link <span class="opt-tag">optional</span></label>
+        <input type="url" name="google_profile" placeholder="https://maps.google.com/...">
+        <span class="fhint">We'll add a "See all reviews" link pointing here</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 7: PHOTOS ── -->
+  <div class="q-section" data-section="7">
+    <div class="q-section-head">
+      <div class="q-num">7</div>
+      <div class="q-section-head-txt">
+        <h2>Photos</h2>
+        <p>Real photos of your work, team, and results — this is what makes your site yours</p>
+      </div>
+      <span class="q-req-count">required</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="section-note">Share photos via Google Drive. Create a folder, drop your photos in, set sharing to "Anyone with the link can view," and paste the link below.</div>
+
+      <div class="fgroup">
+        <label>Google Drive Photo Folder Link <span class="req-star">*</span></label>
+        <input type="url" name="photo_drive_link" placeholder="https://drive.google.com/drive/folders/..." required>
+        <span class="fhint">If you have no photos yet, write "No photos yet" — we'll use professional stock imagery that matches your brand</span>
+      </div>
+
+      <div class="fgroup">
+        <label>What Photos Are in That Folder?</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="photo_team" value="yes"><label>Team / cleaners</label></label>
+          <label class="check-item"><input type="checkbox" name="photo_before" value="yes"><label>Before photos</label></label>
+          <label class="check-item"><input type="checkbox" name="photo_after" value="yes"><label>After photos</label></label>
+          <label class="check-item"><input type="checkbox" name="photo_homes" value="yes"><label>Homes we've cleaned</label></label>
+          <label class="check-item"><input type="checkbox" name="photo_supplies" value="yes"><label>Equipment / supplies</label></label>
+          <label class="check-item"><input type="checkbox" name="photo_logo" value="yes"><label>Logo file</label></label>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label>Do You Have Before/After Photos? <span class="req-star">*</span></label>
+        <select name="has_before_after" required>
+          <option value="" disabled selected>Select…</option>
+          <option>Yes — included in my Drive folder above</option>
+          <option>Yes — but I need to photograph some, I'll send later</option>
+          <option>No — use professional stock images for now</option>
+        </select>
+        <span class="fhint">Before/after photos are the #1 conversion element on a cleaning website — worth getting if you don't have them</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 8: TECH SETUP ── -->
+  <div class="q-section" data-section="8">
+    <div class="q-section-head">
+      <div class="q-num">8</div>
+      <div class="q-section-head-txt">
+        <h2>Tech & Setup</h2>
+        <p>How leads contact you and where the site will live</p>
+      </div>
+      <span class="q-req-count">2 required</span>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="fgroup">
+        <label>How Do You Want Leads to Reach You? <span class="req-star">*</span></label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="lead_form" value="yes"><label>Contact form on site</label></label>
+          <label class="check-item"><input type="checkbox" name="lead_phone" value="yes"><label>Phone call / click-to-call</label></label>
+          <label class="check-item"><input type="checkbox" name="lead_text" value="yes"><label>Text message</label></label>
+          <label class="check-item"><input type="checkbox" name="lead_booking" value="yes"><label>Online booking link</label></label>
+          <label class="check-item"><input type="checkbox" name="lead_email" value="yes"><label>Email directly</label></label>
+        </div>
+      </div>
+      <div class="fgroup">
+        <label>Online Booking Link <span class="opt-tag">optional</span></label>
+        <input type="url" name="booking_link" placeholder="https://calendly.com/... or Jobber link, etc.">
+        <span class="fhint">If you use Jobber, Housecall Pro, Calendly, etc. — paste the link</span>
+      </div>
+      <div class="fgroup">
+        <label>Do You Have a Domain? <span class="req-star">*</span></label>
+        <select name="has_domain" required>
+          <option value="" disabled selected>Select…</option>
+          <option>Yes — I own a domain already</option>
+          <option>No — I need to buy one</option>
+          <option>Not sure</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label>Domain Name (If You Have One) <span class="opt-tag">optional</span></label>
+        <input type="text" name="domain" placeholder="e.g. sparkleclean.com">
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label>Facebook Page URL <span class="opt-tag">optional</span></label>
+          <input type="url" name="facebook" placeholder="https://facebook.com/...">
+        </div>
+        <div class="fgroup">
+          <label>Instagram Handle <span class="opt-tag">optional</span></label>
+          <input type="text" name="instagram" placeholder="@yourhandle">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label>TikTok Handle <span class="opt-tag">optional</span></label>
+          <input type="text" name="tiktok" placeholder="@yourhandle">
+        </div>
+        <div class="fgroup">
+          <label>Nextdoor / Other Platform <span class="opt-tag">optional</span></label>
+          <input type="url" name="other_social" placeholder="URL or handle">
+        </div>
+      </div>
+      <div class="fgroup">
+        <label>Anything Else We Should Know <span class="opt-tag">optional</span></label>
+        <textarea name="additional_notes" placeholder="Special requests, things that are important to you, anything about your business we should know that wasn't covered above…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-section">
+    <h2>You're All Set — Let's Build It</h2>
+    <p>Hit submit and Tyler at Brechtland will review your answers and reach out within 24 hours to confirm before building your site.</p>
+    <button type="submit" class="submit-btn">Submit My Intake Form →</button>
+    <div class="submit-checklist">
+      <span class="submit-check">Delivered within 48 hours</span>
+      <span class="submit-check">1 round of revisions included</span>
+      <span class="submit-check">Mobile-optimized</span>
+      <span class="submit-check">Hosted & live on your domain</span>
+    </div>
+  </div>
+
+</form>
+
+<script>
+  /* ── ACCORDION ─────────────────────────────── */
+  document.querySelectorAll('.q-section-head').forEach(head => {
+    head.addEventListener('click', () => {
+      const sec = head.closest('.q-section');
+      const isOpen = sec.classList.contains('open');
+      document.querySelectorAll('.q-section').forEach(s => s.classList.remove('open'));
+      if (!isOpen) sec.classList.add('open');
+      updateProgress();
+    });
+  });
+
+  /* ── PROGRESS ──────────────────────────────── */
+  function updateProgress() {
+    document.querySelectorAll('.q-section').forEach((sec, i) => {
+      const step = document.querySelector('.prog-step[data-sec="'+(i+1)+'"]');
+      if (!step) return;
+      const inputs = sec.querySelectorAll('input[required], select[required], textarea[required]');
+      const filled = [...inputs].every(inp => inp.value.trim() !== '');
+      step.classList.toggle('done', filled);
+      step.classList.toggle('active', sec.classList.contains('open'));
+    });
+  }
+
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('change', updateProgress);
+    el.addEventListener('input', updateProgress);
+  });
+
+  /* ── FORMSPREE SUBMIT ──────────────────────── */
+  const form = document.getElementById('intakeForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('.submit-btn');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+    try {
+      const resp = await fetch(form.action, {
+        method:'POST',
+        body: new FormData(form),
+        headers:{ 'Accept':'application/json' }
+      });
+      if (resp.ok) {
+        document.getElementById('successMsg').style.display = 'block';
+        form.style.display = 'none';
+        window.scrollTo({ top:0, behavior:'smooth' });
+      } else {
+        btn.textContent = 'Something went wrong — try again';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Network error — try again';
+      btn.disabled = false;
+    }
+  });
+
+  /* ── AUTO-OPEN NEXT SECTION ────────────────── */
+  document.querySelectorAll('.q-section').forEach((sec, i) => {
+    const inputs = sec.querySelectorAll('input, select, textarea');
+    inputs.forEach(inp => {
+      inp.addEventListener('blur', () => {
+        const allRequired = [...sec.querySelectorAll('[required]')].every(r => r.value.trim());
+        if (allRequired) {
+          const next = document.querySelectorAll('.q-section')[i+1];
+          if (next && !next.classList.contains('open')) {
+            sec.classList.remove('open');
+            next.classList.add('open');
+            next.scrollIntoView({ behavior:'smooth', block:'start' });
+            updateProgress();
+          }
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
