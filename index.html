@@ -400,18 +400,34 @@
     .trust-item p  { font-size:.85rem; color:var(--text-lt); }
 
     /* ══════════════════════════════════════════════
-       TESTIMONIALS
+       TESTIMONIALS CAROUSEL
     ══════════════════════════════════════════════ */
     .test-sec { background:var(--bg-lt); }
-    .test-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+
+    .test-carousel-wrap {
+      overflow:hidden;
+      position:relative;
+      /* fade edges */
+      -webkit-mask-image:linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      mask-image:linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    }
+    .test-track {
+      display:flex; gap:22px;
+      width:max-content;
+      animation:review-scroll 40s linear infinite;
+    }
+    .test-track:hover { animation-play-state:paused; }
+    @keyframes review-scroll {
+      0%   { transform:translateX(0); }
+      100% { transform:translateX(-50%); }
+    }
 
     .test-card {
       background:#fff; border:1px solid var(--border); border-radius:var(--r-lg);
       padding:26px; box-shadow:var(--sh);
       display:flex; flex-direction:column; gap:14px;
-      transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+      width:340px; flex-shrink:0;
     }
-    .test-card:hover { transform:translateY(-4px); box-shadow:var(--sh-md); }
 
     .stars { display:flex; gap:3px; color:#FBBF24; font-size:.95rem; }
     .test-txt { color:var(--text); font-size:.92rem; line-height:1.72; flex:1; }
@@ -432,17 +448,6 @@
     }
     .ava-name { font-weight:600; font-size:.88rem; color:var(--dark); }
     .ava-detail { font-size:.78rem; color:var(--text-lt); }
-
-    .test-feat {
-      grid-column:span 3; background:#fff;
-      border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--sh-md);
-      display:grid; grid-template-columns:1fr 1fr;
-    }
-    .test-feat-img { width:100%; height:320px; object-fit:cover; object-position:center top; }
-    .test-feat-body {
-      padding:40px; display:flex; flex-direction:column; justify-content:center; gap:18px;
-    }
-    .test-feat-body .test-txt { font-size:1.08rem; }
 
     /* ══════════════════════════════════════════════
        QUOTE / CONTACT
@@ -546,9 +551,6 @@
       .how-img-wrap img { height:360px; }
       .team-layout { grid-template-columns:1fr; gap:48px; }
       .team-img-wrap img { height:380px; }
-      .test-grid { grid-template-columns:1fr; }
-      .test-feat { grid-column:span 1; grid-template-columns:1fr; }
-      .test-feat-img { height:260px; }
       .quote-layout { grid-template-columns:1fr; gap:48px; }
       .footer-top { grid-template-columns:1fr 1fr; gap:32px; }
       .hero { padding-bottom:150px; }
@@ -958,57 +960,154 @@
       <h2>What Our Clients Say</h2>
       <p>Don't take our word for it — here's what real homeowners and hosts have to say after their first clean.</p>
     </div>
+  </div>
 
-    <div class="test-grid">
+  <div class="test-carousel-wrap fi">
+    <div class="test-track">
 
-      <div class="test-card fi">
+      <!-- ── SET 1 ── -->
+      <div class="test-card">
         <div class="stars">★★★★★</div>
-        <p class="test-txt">I've tried three other cleaning services and none of them came close. These guys actually clean behind things, inside the microwave, the grout. My bathroom hasn't looked like this since the day we moved in.</p>
+        <p class="test-txt">I've tried three other cleaning services and none of them came close. They actually clean behind things, inside the microwave, the grout. My bathroom hasn't looked like this since the day we moved in.</p>
         <div class="test-author">
           <div class="ava">S</div>
-          <div>
-            <div class="ava-name">Sarah M.</div>
-            <div class="ava-detail">Homeowner — [City, State]</div>
-          </div>
+          <div><div class="ava-name">Sarah M.</div><div class="ava-detail">Homeowner — [City, State]</div></div>
         </div>
       </div>
 
-      <div class="test-card fi d1">
+      <div class="test-card">
         <div class="stars">★★★★★</div>
-        <p class="test-txt">Running an Airbnb with back-to-back bookings was stressful until I found them. Now I don't even think about it. Always on time, always thorough — guests consistently leave 5-star reviews and mention how clean it is.</p>
+        <p class="test-txt">Running an Airbnb with back-to-back bookings was stressful until I found them. Now I don't even think about it. Guests consistently leave 5-star reviews and mention how clean the place is.</p>
         <div class="test-author">
           <div class="ava">J</div>
-          <div>
-            <div class="ava-name">James R.</div>
-            <div class="ava-detail">Airbnb Host — 3 Units</div>
-          </div>
+          <div><div class="ava-name">James R.</div><div class="ava-detail">Airbnb Host — 3 Units</div></div>
         </div>
       </div>
 
-      <div class="test-card fi d2">
+      <div class="test-card">
         <div class="stars">★★★★★</div>
-        <p class="test-txt">Hired them for a move-out clean on short notice and got my entire deposit back. My landlord actually texted asking who I used. Booked them immediately for my new place. Absolutely worth every penny.</p>
+        <p class="test-txt">Hired them for a move-out clean on short notice and got my entire deposit back. My landlord texted asking who I used. Booked them immediately for my new place. Worth every penny.</p>
         <div class="test-author">
           <div class="ava">A</div>
-          <div>
-            <div class="ava-name">Amanda K.</div>
-            <div class="ava-detail">Former Tenant — Full Deposit Returned</div>
-          </div>
+          <div><div class="ava-name">Amanda K.</div><div class="ava-detail">Former Tenant — Full Deposit Returned</div></div>
         </div>
       </div>
 
-      <div class="test-feat fi">
-        <img src="social-proof-homeowner.jpg" alt="Happy homeowner in clean kitchen" class="test-feat-img">
-        <div class="test-feat-body">
-          <div class="stars">★★★★★</div>
-          <p class="test-txt">"I used to spend my entire Saturday cleaning the house. Now I use that time with my family. The home is cleaner than I ever got it myself — and I don't have to think about it. Best money I spend every single month."</p>
-          <div class="test-author" style="margin-top:6px">
-            <div class="ava" style="width:50px;height:50px;font-size:1.2rem;">M</div>
-            <div>
-              <div class="ava-name" style="font-size:.95rem">Michelle T.</div>
-              <div class="ava-detail">Recurring Client — 14+ Months</div>
-            </div>
-          </div>
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">I used to spend my entire Saturday cleaning. Now I use that time with my family. The house is cleaner than I ever got it myself and I don't have to think about it. Best money I spend every month.</p>
+        <div class="test-author">
+          <div class="ava">M</div>
+          <div><div class="ava-name">Michelle T.</div><div class="ava-detail">Recurring Client — 14+ Months</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Had them do a deep clean before listing my house. Realtor said it was the cleanest home she'd walked into in months. We got three offers the first weekend. I'm crediting the clean for at least one of them.</p>
+        <div class="test-author">
+          <div class="ava">D</div>
+          <div><div class="ava-name">David L.</div><div class="ava-detail">Home Seller — [City, State]</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Two kids, a dog, and a husband who doesn't clean. These people are literal lifesavers. They show up the same day every two weeks, same crew, and my house actually stays clean in between because of how thorough they are.</p>
+        <div class="test-author">
+          <div class="ava">R</div>
+          <div><div class="ava-name">Rachel P.</div><div class="ava-detail">Recurring Client — Weekly Service</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Moved into a place that the previous tenants left wrecked. One deep clean later it looked brand new. The oven alone took probably two hours — they didn't rush it. Unreal attention to detail.</p>
+        <div class="test-author">
+          <div class="ava">T</div>
+          <div><div class="ava-name">Tyler B.</div><div class="ava-detail">New Tenant — Move-In Clean</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">I manage four short-term rentals and this team handles all of them. Turnovers happen same day, every time. Not once have I had a guest complaint about cleanliness since switching. That alone is priceless.</p>
+        <div class="test-author">
+          <div class="ava">K</div>
+          <div><div class="ava-name">Kevin S.</div><div class="ava-detail">STR Property Manager — 4 Units</div></div>
+        </div>
+      </div>
+
+      <!-- ── SET 2 (duplicate for seamless loop) ── -->
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">I've tried three other cleaning services and none of them came close. They actually clean behind things, inside the microwave, the grout. My bathroom hasn't looked like this since the day we moved in.</p>
+        <div class="test-author">
+          <div class="ava">S</div>
+          <div><div class="ava-name">Sarah M.</div><div class="ava-detail">Homeowner — [City, State]</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Running an Airbnb with back-to-back bookings was stressful until I found them. Now I don't even think about it. Guests consistently leave 5-star reviews and mention how clean the place is.</p>
+        <div class="test-author">
+          <div class="ava">J</div>
+          <div><div class="ava-name">James R.</div><div class="ava-detail">Airbnb Host — 3 Units</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Hired them for a move-out clean on short notice and got my entire deposit back. My landlord texted asking who I used. Booked them immediately for my new place. Worth every penny.</p>
+        <div class="test-author">
+          <div class="ava">A</div>
+          <div><div class="ava-name">Amanda K.</div><div class="ava-detail">Former Tenant — Full Deposit Returned</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">I used to spend my entire Saturday cleaning. Now I use that time with my family. The house is cleaner than I ever got it myself and I don't have to think about it. Best money I spend every month.</p>
+        <div class="test-author">
+          <div class="ava">M</div>
+          <div><div class="ava-name">Michelle T.</div><div class="ava-detail">Recurring Client — 14+ Months</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Had them do a deep clean before listing my house. Realtor said it was the cleanest home she'd walked into in months. We got three offers the first weekend. I'm crediting the clean for at least one of them.</p>
+        <div class="test-author">
+          <div class="ava">D</div>
+          <div><div class="ava-name">David L.</div><div class="ava-detail">Home Seller — [City, State]</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Two kids, a dog, and a husband who doesn't clean. These people are literal lifesavers. They show up the same day every two weeks, same crew, and my house actually stays clean in between because of how thorough they are.</p>
+        <div class="test-author">
+          <div class="ava">R</div>
+          <div><div class="ava-name">Rachel P.</div><div class="ava-detail">Recurring Client — Weekly Service</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">Moved into a place that the previous tenants left wrecked. One deep clean later it looked brand new. The oven alone took probably two hours — they didn't rush it. Unreal attention to detail.</p>
+        <div class="test-author">
+          <div class="ava">T</div>
+          <div><div class="ava-name">Tyler B.</div><div class="ava-detail">New Tenant — Move-In Clean</div></div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="stars">★★★★★</div>
+        <p class="test-txt">I manage four short-term rentals and this team handles all of them. Turnovers happen same day, every time. Not once have I had a guest complaint about cleanliness since switching. That alone is priceless.</p>
+        <div class="test-author">
+          <div class="ava">K</div>
+          <div><div class="ava-name">Kevin S.</div><div class="ava-detail">STR Property Manager — 4 Units</div></div>
         </div>
       </div>
 
