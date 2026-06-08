@@ -582,7 +582,7 @@
       }
       .sticky-cta.visible { transform:translateY(0); }
       .sticky-cta .btn-blue {
-        width:100%; justify-content:center;
+        display:flex; width:100%; justify-content:center;
         padding:15px; font-size:1rem; border-radius:10px;
       }
     }
@@ -1099,6 +1099,11 @@
 </footer>
 
 
+<!-- ══════════ STICKY MOBILE CTA ══════════ -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="#contact" class="btn btn-blue">Get a Free Quote →</a>
+</div>
+
 <script>
   /* ── NAV SCROLL ──────────────────────────── */
   const nav = document.getElementById('nav');
@@ -1166,11 +1171,6 @@
     window.addEventListener('scroll', showCta, { passive: true });
   }
 </script>
-
-<!-- ══════════ STICKY MOBILE CTA ══════════ -->
-<div class="sticky-cta" id="stickyCta">
-  <a href="#contact" class="btn btn-blue">Get a Free Quote →</a>
-</div>
 
 </body>
 </html>
