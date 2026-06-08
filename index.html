@@ -158,6 +158,7 @@
     .hero {
       position:relative; height:100vh; min-height:680px;
       display:flex; align-items:center; overflow:hidden;
+      padding-bottom:120px; /* reserve space for stats bar */
     }
     .hero-bg {
       position:absolute; inset:0; width:100%; height:100%;
@@ -167,7 +168,7 @@
       position:absolute; inset:0;
       background:linear-gradient(135deg, rgba(13,27,42,.74) 0%, rgba(13,27,42,.44) 60%, rgba(26,143,227,.10) 100%);
     }
-    .hero-body { position:relative; z-index:2; max-width:700px; }
+    .hero-body { position:relative; z-index:2; max-width:700px; padding-right:16px; }
     .hero-badge {
       display:inline-flex; align-items:center; gap:8px;
       background:rgba(255,255,255,.13); backdrop-filter:blur(8px);
@@ -522,10 +523,35 @@
       .hstat:nth-child(1),
       .hstat:nth-child(2) { border-bottom:1px solid rgba(255,255,255,.1); }
       .hstat { padding:12px 16px; }
+      .hero { padding-bottom:150px; }
     }
     @media(max-width:620px){
       .sec { padding:68px 0; }
-      .hero-ctas { flex-direction:column; align-items:flex-start; }
+
+      /* Hero mobile fixes */
+      .hero {
+        height:auto;
+        min-height:100svh;
+        align-items:flex-start;
+        padding-top:100px;
+        padding-bottom:0;
+      }
+      .hero-body {
+        padding-right:0;
+        padding-bottom:160px; /* clear the stats bar */
+      }
+      h1.hero-title { font-size:2.4rem; }
+      .hero-sub { font-size:1rem; margin-bottom:28px; }
+      .hero-badge { font-size:.7rem; padding:6px 13px; margin-bottom:18px; }
+      .hero-ctas { flex-direction:column; align-items:stretch; gap:10px; }
+      .hero-ctas .btn { width:100%; justify-content:center; padding:15px 20px; font-size:.97rem; }
+
+      /* Stats bar: 2x2 grid, more breathing room */
+      .hero-stats-row { grid-template-columns:repeat(2,1fr); }
+      .hstat { padding:16px 12px; }
+      .hstat-num { font-size:1.65rem; }
+      .hstat-lbl { font-size:.65rem; }
+
       .form-row { grid-template-columns:1fr; }
       .footer-top { grid-template-columns:1fr; }
       .footer-bot { flex-direction:column; gap:14px; text-align:center; }
