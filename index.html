@@ -192,19 +192,32 @@
       position:absolute; bottom:0; left:0; right:0; z-index:2;
       background:rgba(10,22,38,.6); backdrop-filter:blur(16px);
       border-top:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+      padding:18px 0;
     }
-    .hero-stats-row {
-      display:grid; grid-template-columns:repeat(4,1fr);
-      padding:22px 0;
+    /* Ticker track */
+    .hstat-ticker {
+      display:flex; align-items:center;
+      width:max-content;
+      animation:ticker-scroll 28s linear infinite;
     }
+    .hstat-ticker:hover { animation-play-state:paused; }
+    @keyframes ticker-scroll {
+      0%   { transform:translateX(0); }
+      100% { transform:translateX(-50%); }
+    }
+    /* Each stat item */
     .hstat {
-      text-align:center; padding:0 16px;
-      border-right:1px solid rgba(255,255,255,.1);
+      display:flex; align-items:center; gap:10px;
+      padding:0 36px;
+      border-right:1px solid rgba(255,255,255,.12);
+      white-space:nowrap;
+      flex-shrink:0;
     }
     .hstat:last-child { border-right:none; }
-    .hstat-num { font-family:'DM Serif Display',serif; font-size:1.9rem; color:#fff; line-height:1; }
+    .hstat-num { font-family:'DM Serif Display',serif; font-size:1.75rem; color:#fff; line-height:1; }
     .hstat-num em { font-style:normal; color:var(--green); }
-    .hstat-lbl { font-size:.72rem; color:rgba(255,255,255,.55); font-weight:500; text-transform:uppercase; letter-spacing:.07em; margin-top:4px; }
+    .hstat-lbl { font-size:.72rem; color:rgba(255,255,255,.55); font-weight:500; text-transform:uppercase; letter-spacing:.07em; }
 
     /* ══════════════════════════════════════════════
        BEFORE / AFTER
@@ -518,11 +531,6 @@
       .test-feat-img { height:260px; }
       .quote-layout { grid-template-columns:1fr; gap:48px; }
       .footer-top { grid-template-columns:1fr 1fr; gap:32px; }
-      .hero-stats-row { grid-template-columns:repeat(2,1fr); }
-      .hstat:nth-child(2) { border-right:none; }
-      .hstat:nth-child(1),
-      .hstat:nth-child(2) { border-bottom:1px solid rgba(255,255,255,.1); }
-      .hstat { padding:12px 16px; }
       .hero { padding-bottom:150px; }
     }
     @media(max-width:620px){
@@ -546,15 +554,37 @@
       .hero-ctas { flex-direction:column; align-items:stretch; gap:10px; }
       .hero-ctas .btn { width:100%; justify-content:center; padding:15px 20px; font-size:.97rem; }
 
-      /* Stats bar: 2x2 grid, more breathing room */
-      .hero-stats-row { grid-template-columns:repeat(2,1fr); }
-      .hstat { padding:16px 12px; }
-      .hstat-num { font-size:1.65rem; }
-      .hstat-lbl { font-size:.65rem; }
+      /* Stats ticker: slightly slower on mobile, still readable */
+      .hstat-ticker { animation-duration:22s; }
+      .hstat { padding:0 24px; }
+      .hstat-num { font-size:1.5rem; }
+      .hstat-lbl { font-size:.62rem; }
 
       .form-row { grid-template-columns:1fr; }
       .footer-top { grid-template-columns:1fr; }
       .footer-bot { flex-direction:column; gap:14px; text-align:center; }
+    }
+    /* ══════════════════════════════════════════════
+       STICKY MOBILE CTA BAR
+    ══════════════════════════════════════════════ */
+    .sticky-cta {
+      display:none; /* desktop: hidden */
+    }
+    @media(max-width:980px){
+      .sticky-cta {
+        display:block;
+        position:fixed; bottom:0; left:0; right:0; z-index:200;
+        padding:12px 16px;
+        background:rgba(10,22,38,.92); backdrop-filter:blur(14px);
+        border-top:1px solid rgba(255,255,255,.1);
+        transform:translateY(100%);
+        transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+      }
+      .sticky-cta.visible { transform:translateY(0); }
+      .sticky-cta .btn-blue {
+        width:100%; justify-content:center;
+        padding:15px; font-size:1rem; border-radius:10px;
+      }
     }
   </style>
 </head>
@@ -613,25 +643,21 @@
   </div>
 
   <div class="hero-stats">
-    <div class="wrap">
-      <div class="hero-stats-row">
-        <div class="hstat">
-          <div class="hstat-num">500<em>+</em></div>
-          <div class="hstat-lbl">Homes Cleaned</div>
-        </div>
-        <div class="hstat">
-          <div class="hstat-num">5.0<em>★</em></div>
-          <div class="hstat-lbl">Average Rating</div>
-        </div>
-        <div class="hstat">
-          <div class="hstat-num">100<em>%</em></div>
-          <div class="hstat-lbl">Satisfaction Guaranteed</div>
-        </div>
-        <div class="hstat">
-          <div class="hstat-num">3<em>hr</em></div>
-          <div class="hstat-lbl">Quote Response Time</div>
-        </div>
-      </div>
+    <div class="hstat-ticker">
+      <!-- Set 1 -->
+      <div class="hstat"><div class="hstat-num">500<em>+</em></div><div class="hstat-lbl">Homes Cleaned</div></div>
+      <div class="hstat"><div class="hstat-num">5.0<em>★</em></div><div class="hstat-lbl">Average Rating</div></div>
+      <div class="hstat"><div class="hstat-num">100<em>%</em></div><div class="hstat-lbl">Satisfaction Guaranteed</div></div>
+      <div class="hstat"><div class="hstat-num">3<em>hr</em></div><div class="hstat-lbl">Quote Response Time</div></div>
+      <div class="hstat"><div class="hstat-num">5<em>yr</em></div><div class="hstat-lbl">In Business</div></div>
+      <div class="hstat"><div class="hstat-num">200<em>+</em></div><div class="hstat-lbl">5-Star Reviews</div></div>
+      <!-- Set 2 — duplicate for seamless loop -->
+      <div class="hstat"><div class="hstat-num">500<em>+</em></div><div class="hstat-lbl">Homes Cleaned</div></div>
+      <div class="hstat"><div class="hstat-num">5.0<em>★</em></div><div class="hstat-lbl">Average Rating</div></div>
+      <div class="hstat"><div class="hstat-num">100<em>%</em></div><div class="hstat-lbl">Satisfaction Guaranteed</div></div>
+      <div class="hstat"><div class="hstat-num">3<em>hr</em></div><div class="hstat-lbl">Quote Response Time</div></div>
+      <div class="hstat"><div class="hstat-num">5<em>yr</em></div><div class="hstat-lbl">In Business</div></div>
+      <div class="hstat"><div class="hstat-num">200<em>+</em></div><div class="hstat-lbl">5-Star Reviews</div></div>
     </div>
   </div>
 </section>
@@ -1129,7 +1155,22 @@
       if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
   });
+  /* ── STICKY CTA BAR (mobile) ─────────────── */
+  const stickyCta  = document.getElementById('stickyCta');
+  const heroSec    = document.querySelector('.hero');
+  if (stickyCta && heroSec) {
+    const showCta = () => {
+      const heroBottom = heroSec.getBoundingClientRect().bottom;
+      stickyCta.classList.toggle('visible', heroBottom < 0);
+    };
+    window.addEventListener('scroll', showCta, { passive: true });
+  }
 </script>
+
+<!-- ══════════ STICKY MOBILE CTA ══════════ -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="#contact" class="btn btn-blue">Get a Free Quote →</a>
+</div>
 
 </body>
 </html>
