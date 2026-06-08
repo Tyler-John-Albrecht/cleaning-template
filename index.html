@@ -322,15 +322,24 @@
 
     .svc-foot {
       padding:14px 24px; border-top:1px solid var(--border);
-      display:flex; align-items:center; justify-content:space-between;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
-    .svc-price { font-weight:700; color:var(--dark); font-size:.88rem; }
+    .svc-price { font-weight:500; color:var(--text-lt); font-size:.78rem; line-height:1.4; }
     .svc-arr {
       width:34px; height:34px; border-radius:50%; background:var(--bg-lt);
       display:flex; align-items:center; justify-content:center;
       font-size:1rem; transition:background .2s, color .2s, transform .2s;
+      flex-shrink:0;
     }
     .svc-card:hover .svc-arr { background:var(--blue); color:#fff; transform:translateX(3px); }
+    /* Text CTA variant */
+    .svc-cta-lnk {
+      width:auto; height:auto; border-radius:0; background:transparent;
+      font-size:.82rem; font-weight:700; color:var(--blue);
+      white-space:nowrap; flex-shrink:0;
+      transition:color .2s, transform .2s;
+    }
+    .svc-card:hover .svc-cta-lnk { background:transparent; color:var(--blue-dk); transform:translateX(3px); }
 
     /* ══════════════════════════════════════════════
        HOW IT WORKS
@@ -782,8 +791,8 @@
           <p>Weekly, bi-weekly, or monthly visits that keep your home consistently clean. Same trusted cleaner every time. No long-term contracts — cancel anytime.</p>
         </div>
         <div class="svc-foot">
-          <span class="svc-price">From $[price] / visit</span>
-          <a href="#contact" class="svc-arr">→</a>
+          <span class="svc-price">Most popular · Clients avg. 2.5 years with us</span>
+          <a href="#contact" class="svc-arr svc-cta-lnk">Get a Free Quote →</a>
         </div>
       </div>
 
@@ -797,8 +806,8 @@
           <p>A thorough top-to-bottom clean covering every corner, grout line, appliance interior, and overlooked spot. Perfect for first-time visits or seasonal resets.</p>
         </div>
         <div class="svc-foot">
-          <span class="svc-price">From $[price]</span>
-          <a href="#contact" class="svc-arr">→</a>
+          <span class="svc-price">48-point checklist · Most booked before move-in &amp; sale</span>
+          <a href="#contact" class="svc-arr svc-cta-lnk">Get a Free Quote →</a>
         </div>
       </div>
 
@@ -811,8 +820,8 @@
           <p>Leave the old place spotless or start fresh in a new one. We clean empty units top-to-bottom — so you get your full deposit back, or a clean slate on day one.</p>
         </div>
         <div class="svc-foot">
-          <span class="svc-price">From $[price]</span>
-          <a href="#contact" class="svc-arr">→</a>
+          <span class="svc-price">Landlord &amp; realtor approved · Re-clean guarantee if inspection fails</span>
+          <a href="#contact" class="svc-arr svc-cta-lnk">Get a Free Quote →</a>
         </div>
       </div>
 
@@ -826,8 +835,8 @@
           <p>Fast, reliable between-guest cleans that keep your listing 5-star ready. Linen resets, restock, and pre-check inspection included. Never scramble between bookings again.</p>
         </div>
         <div class="svc-foot">
-          <span class="svc-price">From $[price]</span>
-          <a href="#contact" class="svc-arr">→</a>
+          <span class="svc-price">Same-day turnovers · Keeps your Superhost rating intact</span>
+          <a href="#contact" class="svc-arr svc-cta-lnk">Get a Free Quote →</a>
         </div>
       </div>
 
